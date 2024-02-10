@@ -63,29 +63,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create release
-        id: release
-        uses: benwoo1110/semantic-release-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_mode: ${{ inputs.release_mode }}
-          version_bump: ${{ inputs.version_bump }}
-          promote_from: ${{ inputs.promote_from }}
 
-      - name: Publish package
-        if: steps.release.outputs.release_created == 'true'
-        uses: gradle/gradle-build-action@v2
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
         with:
-          arguments: publish -x test
-        env:
-          GITHUB_VERSION: ${{ steps.release.outputs.publish_version }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload release artifact
-        if: steps.release.outputs.release_created == 'true'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/libs/${{ inputs.plugin_name }}-${{ steps.release.outputs.publish_version }}.jar
-          asset_name: ${{ inputs.plugin_name }}-${{ steps.release.outputs.tag_name }}.jar
-          tag: ${{ steps.release.outputs.tag_name }}
+          name: MV_Files
+          path: build/libs/*
