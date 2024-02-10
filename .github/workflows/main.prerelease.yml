@@ -2,7 +2,7 @@ name: 'Main: Prerelease'
 
 on:
   push:
-    branches: [main]
+    branches: [MV5]
 
 jobs:
   github_release_on_push:
@@ -11,14 +11,3 @@ jobs:
     with:
       release_mode: prerelease
       version_bump: prlabel
-
-  platform_uploads_on_push:
-    needs: github_release_on_push
-    if: needs.github_release_on_push.outputs.release_created == 'true'
-    uses: ./.github/workflows/call.platform_uploads.yml
-    secrets: inherit
-    with:
-      target_tag: ${{ needs.github_release_on_push.outputs.tag_name }}
-      upload_modrinth: 'true'
-      upload_dbo: 'false'
-      upload_hangar: 'false'
