@@ -310,7 +310,7 @@ shadowJar {
 }
 
 build.dependsOn shadowJar
-jar.enabled = false
+jar.enabled = true
 
 test {
     useJUnitPlatform()
